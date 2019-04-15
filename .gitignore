@@ -1,6 +1,8 @@
-.Rproj.user
+.Rproj.user/
 .Rhistory
 .RData
 .Ruserdata
 public
 static/figures
+*.Rproj
+.Rproj.user
