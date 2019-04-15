@@ -4,5 +4,5 @@
 .Ruserdata
 public
 static/figures
-*.Rproj
+*.Rproj/
 .Rproj.user
