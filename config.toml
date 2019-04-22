@@ -1,0 +1,27 @@
+baseurl = "https://nanx.me/hugo-tanka/"
+title = "Hugo Tanka Theme"
+author = "Nan Xiao"
+canonifyurls = true
+languagecode = "en"
+theme = "hugo-tanka"
+
+googleAnalytics = ""
+disqusShortname = ""
+disable_mathjax = false
+
+pygmentsstyle      = "vs"
+pygmentscodefences = true
+
+ignoreFiles = ["\\.Rmd$", "\\.Rmarkdown$", "_files$", "_cache$"]
+
+[params]
+  sitename = "Adventures in randerful life"
+
+[[menu.main]]
+    name = "Home"
+    url = "https://nanx.me"
+    weight = 1
+[[menu.main]]
+    name = "GitHub"
+    url = "https://github.com/YiLIU001"
+    weight = 2
