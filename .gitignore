@@ -3,6 +3,7 @@
 .RData
 .Ruserdata
 public/
+.DS_Store
 static/figures
 *.Rproj/
 .Rproj.user

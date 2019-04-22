@@ -1,6 +1,6 @@
-baseurl = "https://nanx.me/hugo-tanka/"
-title = "Hugo Tanka Theme"
-author = "Nan Xiao"
+baseurl = "/"
+title = "Adventures in randerful life"
+author = "Yi LIU"
 canonifyurls = true
 languagecode = "en"
 theme = "hugo-tanka"
