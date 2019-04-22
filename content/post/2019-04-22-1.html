@@ -50,7 +50,7 @@ output:
 <pre class="r"><code>set.seed(1234)
 x &lt;- c(rnorm(2000, -2), rnorm(2000, 2))
 hist(x, breaks=500,freq = FALSE)</code></pre>
-<p><img src="/hugo-tanka/post/2019-04-22-1_files/figure-html/unnamed-chunk-1-1.png" width="480" /></p>
+<p><img src="/post/2019-04-22-1_files/figure-html/unnamed-chunk-1-1.png" width="480" /></p>
 <p>为了简化这个参数估计，我们只估计两个高斯分布的均值<span class="math inline">\(\mu_1, \mu_2\)</span>。那么这个问题的对数似然函数就是 <span class="math display">\[\ell(\mu_1, \mu_2|x) = \sum_{i=1}^n \log\left( \pi_1 \phi(x_i;\mu_1, \sigma^2_1) + \pi_2 \phi(x_i;\mu_2, \sigma^2_2)\right)  \]</span> 写成函数有</p>
 <pre class="r"><code>pi1 &lt;- 0.5
 pi2 &lt;- 0.5
@@ -82,14 +82,14 @@ print(paste(&quot;Simple imp result:&quot;, res1))</code></pre>
 microbenchmark(loglik(c(-2,2), x),
                loglik_vec(c(-2,2), x))</code></pre>
 <pre><code>## Unit: microseconds
-##                     expr       min        lq       mean     median
-##      loglik(c(-2, 2), x) 10023.931 11230.026 13592.2449 12182.9845
-##  loglik_vec(c(-2, 2), x)   340.389   359.556   475.6462   389.3925
+##                     expr       min         lq       mean     median
+##      loglik(c(-2, 2), x) 10563.724 11567.8425 15850.4201 13268.1575
+##  loglik_vec(c(-2, 2), x)   340.908   365.2325   594.2438   428.6645
 ##          uq       max neval
-##  13667.3255 30454.890   100
-##    452.9685  5501.836   100</code></pre>
+##  16281.7830 49843.657   100
+##    599.3385  7782.847   100</code></pre>
 <p>所以我们使用第二种矢量化的函数。</p>
-<p>下面我们看看这个对数似然函数的样貌(landscape)。 <img src="/hugo-tanka/post/2019-04-22-1_files/figure-html/unnamed-chunk-6-1.png" width="672" /> 很明显的一点是对数似然函数是对称的，即<span class="math inline">\(\mu_1 \leftrightarrow \mu_2\)</span>，我们得到同样的对数似然函数。这一点在前面介绍过。随着<span class="math inline">\(K\)</span>的增大，这种对称性也会变强，导致也要有更多的似然函数的极值点。</p>
+<p>下面我们看看这个对数似然函数的样貌(landscape)。 <img src="/post/2019-04-22-1_files/figure-html/unnamed-chunk-6-1.png" width="672" /> 很明显的一点是对数似然函数是对称的，即<span class="math inline">\(\mu_1 \leftrightarrow \mu_2\)</span>，我们得到同样的对数似然函数。这一点在前面介绍过。随着<span class="math inline">\(K\)</span>的增大，这种对称性也会变强，导致也要有更多的似然函数的极值点。</p>
 <p>下面我们来比较一下梯度下降法和EM算法的效率。对于梯度下降法，对数似然函数的梯度是 <span class="math display">\[\frac{\partial \ell}{\partial \mu_1} = \sum_{i=1}^n \frac{\pi_1 \phi_1(x_i) (-) (\mu_1-x_i)/\sigma^2}{\pi_1 \phi_1(x_i) + \pi_2\phi_2(x_i)}\]</span> <span class="math display">\[\frac{\partial \ell}{\partial \mu_2} = \sum_{i=1}^n \frac{\pi_2 \phi_2(x_i) (-) (\mu_2-x_i)/\sigma^2}{\pi_1 \phi_1(x_i) + \pi_2\phi_2(x_i)}\]</span> 现在我们可以定义梯度计算的函数</p>
 <pre class="r"><code>dmu1 &lt;- function(mu1, mu2) {
   sum(-(mu1-x)*pi1*dnorm(x,mu1, sd1)/(sd1^2*(pi1*dnorm(x, mu1, sd1) +pi2*dnorm(x, mu2, sd2))))
@@ -97,8 +97,8 @@ microbenchmark(loglik(c(-2,2), x),
 dmu2 &lt;- function(mu1, mu2) {
   sum(-(mu2-x)*pi2*dnorm(x,mu2, sd2)/(sd2^2*(pi1*dnorm(x, mu1, sd1) +pi2*dnorm(x, mu2, sd2))))
 }</code></pre>
-<p>下面是用梯度上升法估计参数的结果。其中的学习率在一个范围内选取了一个最合适的值。 <img src="/hugo-tanka/post/2019-04-22-1_files/figure-html/unnamed-chunk-8-1.png" width="672" /><img src="/hugo-tanka/post/2019-04-22-1_files/figure-html/unnamed-chunk-8-2.png" width="672" /></p>
-<p>现在我们有EM算法来求解，算法细节在后面的文章里给出，这里直接给出结果。 <img src="/hugo-tanka/post/2019-04-22-1_files/figure-html/unnamed-chunk-9-1.png" width="672" /><img src="/hugo-tanka/post/2019-04-22-1_files/figure-html/unnamed-chunk-9-2.png" width="672" /></p>
+<p>下面是用梯度上升法估计参数的结果。其中的学习率在一个范围内选取了一个最合适的值。 <img src="/post/2019-04-22-1_files/figure-html/unnamed-chunk-8-1.png" width="672" /><img src="/post/2019-04-22-1_files/figure-html/unnamed-chunk-8-2.png" width="672" /></p>
+<p>现在我们有EM算法来求解，算法细节在后面的文章里给出，这里直接给出结果。 <img src="/post/2019-04-22-1_files/figure-html/unnamed-chunk-9-1.png" width="672" /><img src="/post/2019-04-22-1_files/figure-html/unnamed-chunk-9-2.png" width="672" /></p>
 <p>从上面的图可以看出，在第二步的时候EM算法就收敛了，而梯度优化法则在约15步才收敛。因此对于高斯混合模型来说，EM算法是更有效的求解方法。在下一篇文章里，我们会详细介绍EM算法。</p>
 </div>
 <div class="section level1">
