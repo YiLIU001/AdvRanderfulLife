@@ -14,6 +14,9 @@ pygmentscodefences = true
 
 ignoreFiles = ["\\.Rmd$", "\\.Rmarkdown$", "_cache$"]
 
+[permalinks]
+  post = "/:year/:month/:day/:slug/"
+
 [params]
   sitename = "Adventures in randerful life"
 
