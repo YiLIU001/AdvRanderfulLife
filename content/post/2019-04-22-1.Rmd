@@ -114,6 +114,7 @@ loglik_df <- loglik_df %>% expand(mu1, mu2)
 loglik_val <- map2(loglik_df$mu1, loglik_df$mu2, c) %>% map(loglik_vec, x) %>% unlist()
 loglik_df$loglik <- loglik_val
 ggplot(loglik_df, aes(x=mu1, y=mu2)) +
+  geom_raster(aes(fill=loglik)) +
   geom_contour(aes(z=loglik), bins=30) + geom_abline(intercept = 0, slope = 1, color="red", linetype="dashed") +
   theme_bw() +
   annotate("text", x=c(2, -2), y=c(-2,2), label="x")
@@ -165,13 +166,15 @@ mu_tra <- mu_tra %>%
          mu2_end=lead(mu2_start)) %>% 
   filter(!is.na(mu1_end))
 
-ggplot(loglik_df, aes(x=mu1, y=mu2)) +
+loglik_df %>% filter(mu1 >= 0, mu1 <=5, mu2 >= -5, mu2 <= 0) %>%
+  ggplot(aes(x=mu1, y=mu2)) +
+  geom_raster(aes(fill=loglik)) +
   geom_contour(aes(z=loglik), bins=30) +
   theme_bw() +
   annotate("text", x=c(2, -2), y=c(-2,2), label="x") +
   geom_segment(data=mu_tra, aes(x=mu1_start, y=mu2_start, xend=mu1_end, yend=mu2_end), arrow = arrow(length = unit(0.01, "npc"))) +
   xlim(0, 5) +
-  ylim(-5,0)
+  ylim(-5, 0)
 ```
 
 现在我们有EM算法来求解，算法细节在后面的文章里给出，这里直接给出结果。
@@ -223,7 +226,9 @@ mu_EM <- mu_EM %>%
 
 plot(1:tot_steps, log_lik_EM, xlab = "step", ylab="Log-likelihood")
 
-ggplot(loglik_df, aes(x=mu1, y=mu2)) +
+loglik_df %>% filter(mu1 >= 0, mu1 <=5, mu2 >= -5, mu2 <= 0) %>%
+  ggplot(aes(x=mu1, y=mu2)) +
+  geom_raster(aes(fill=loglik))+
   geom_contour(aes(z=loglik), bins=30) +
   theme_bw() +
   annotate("text", x=c(2, -2), y=c(-2,2), label="x") +

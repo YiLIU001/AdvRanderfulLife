@@ -87,12 +87,12 @@ print(paste(&quot;Simple imp result:&quot;, res1))</code></pre>
 microbenchmark(loglik(c(-2,2), x),
                loglik_vec(c(-2,2), x))</code></pre>
 <pre><code>## Unit: microseconds
-##                     expr       min        lq       mean   median        uq
-##      loglik(c(-2, 2), x) 10877.248 14321.428 23502.9920 17591.57 29242.565
-##  loglik_vec(c(-2, 2), x)   365.037   397.642   644.5194   479.16   692.811
-##         max neval
-##  107524.363   100
-##    6551.992   100</code></pre>
+##                     expr       min         lq       mean    median
+##      loglik(c(-2, 2), x) 10214.546 11343.6870 12689.5949 12185.824
+##  loglik_vec(c(-2, 2), x)   340.424   362.4555   479.6671   401.356
+##         uq       max neval
+##  13227.856 20871.691   100
+##    441.349  6656.683   100</code></pre>
 <p>所以我们使用第二种矢量化的函数。</p>
 <p>下面我们看看这个对数似然函数的样貌(landscape)。 <img src="/post/2019-04-22-1_files/figure-html/unnamed-chunk-6-1.png" width="672" /> 很明显的一点是对数似然函数是对称的，即<span class="math inline">\(\mu_1 \leftrightarrow \mu_2\)</span>，我们得到同样的对数似然函数。这一点在前面介绍过。随着<span class="math inline">\(K\)</span>的增大，这种对称性也会变强，导致也要有更多的似然函数的极值点。</p>
 <p>下面我们来比较一下梯度下降法和EM算法的效率。对于梯度下降法，对数似然函数的梯度是 <span class="math display">\[\frac{\partial \ell}{\partial \mu_1} = \sum_{i=1}^n \frac{\pi_1 \phi_1(x_i) (-) (\mu_1-x_i)/\sigma^2}{\pi_1 \phi_1(x_i) + \pi_2\phi_2(x_i)}\]</span> <span class="math display">\[\frac{\partial \ell}{\partial \mu_2} = \sum_{i=1}^n \frac{\pi_2 \phi_2(x_i) (-) (\mu_2-x_i)/\sigma^2}{\pi_1 \phi_1(x_i) + \pi_2\phi_2(x_i)}\]</span> 现在我们可以定义梯度计算的函数</p>
