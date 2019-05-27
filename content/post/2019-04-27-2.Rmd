@@ -28,7 +28,7 @@ output:
 我们求解方法是最大似然估计（maximum (log-)likelihood estimation, MLE）。对数似然函数是
 $$ \ell(\theta|x) = \sum_{i=1}^n \log \left( \sum_k \pi_k \phi_k(x_i) \right)$$
 
-在前一篇文章里面我们已经简略提过，对于高斯混合模型求解，比较好的方法是Expectation Maximization（EM）算法。对于每个观察值$x_i$来说，我们并不知道它属于那个组分，为此，我们引入一个因变量，组分指示器(indicator)$z_{ik}$。它的取值如下
+在前一篇文章里面我们已经简略提过，对于高斯混合模型求解，比较好的方法是Expectation Maximization（EM）算法。对于每个观察值$x_i$来说，我们并不知道它属于那个组分，为此，我们引入一个隐变量，组分指示器(indicator)$z_{ik}$。它的取值如下
 $$z_{ik} = \left\{\begin{split} &1,& \text{ if }x_i \in k\text{ th-comp} \\ &0, & \text{ otherwise} \end{split}\right.$$
 当我们能够观测到它的值的时候，我们有全数据似然函数
 $$L_{complete}(\theta| x, z)=\prod_i \prod_k (\pi_k \phi(x_i|\mu_k, \sigma_k^2))^{z_{ik}}$$
