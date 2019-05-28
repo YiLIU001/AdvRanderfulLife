@@ -76,6 +76,6 @@ plot(mu_samples[,2])
 
 * [`stan`](https://mc-stan.org/)：有多种程序语言接口，包括`R`，`python`，`Julia`等。`stan`主要支持Hamiltonian Monte Carlo，因此并不支持对于离散变量的采样。我们介绍的高斯混合模型中的$z$就无法通过`stan`来获得。但是对于高斯混合模型，可以直接使用不含隐变量的对数似然函数来建模求解（即marginalization trick）。
 * [`pymc3`](https://docs.pymc.io/)：使用`theano`做后端的`python`包，可以使用MCMC来近似后验概率，也可以使用变分推断来近似后验概率（关于变分近似，请看后续文章）。目前`pymc4`也在开发，据说会使用`tensorflow`做后端。
-* [`julia`](https://turing.ml/)：一个`Julia`包，主要是MCMC采样。我没有太多经验，就不多做介绍了。
+* [`turing`](https://turing.ml/)：一个`Julia`包，主要是MCMC采样。我没有太多经验，就不多做介绍了。
 
 它们的功能要远比实现一个高斯混合模型复杂的多。这里我们只是稍做介绍，关于具体的功能，可以参看它们的主页。
