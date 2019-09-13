@@ -177,7 +177,7 @@ loglik_df %>% filter(mu1 >= 0, mu1 <=5, mu2 >= -5, mu2 <= 0) %>%
   ylim(-5, 0)
 ```
 
-现在我们有EM算法来求解，算法细节在后面的文章里给出，这里直接给出结果。
+现在我们用EM算法来求解，算法细节在后面的文章里给出，这里直接给出结果。
 ```{r, echo=FALSE, warning=FALSE}
 cal_z <- function(mu1, mu2) {
   
