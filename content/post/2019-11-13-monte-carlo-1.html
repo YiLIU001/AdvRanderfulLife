@@ -89,7 +89,7 @@ draws2 %&gt;%
 </div>
 <div id="self-normalized-importance-sampling" class="section level1">
 <h1>Self-normalized importance sampling</h1>
-<p>上面这种方法的思想很简单也很直观，但是一个问题是如何选择替代概率分布<span class="math inline">\(q(\theta)\)</span>。关于这个替代概率分布，有一个限制条件，即积分 <span class="math display">\[E_q(h(\theta)\frac{p(\theta)}{q(\theta)})\]</span> 的方差是有限的。具体写出就是 <span class="math display">\[\int_\Theta (h(\theta)\frac{p(\theta)}{q(\theta)})^2q(\theta)d\theta = \int_\Theta ^2(\theta) \frac{p^2(\theta)}{q(\theta)}d\theta &lt; + \infty\]</span></p>
+<p>上面这种方法的思想很简单也很直观，但是一个问题是如何选择替代概率分布<span class="math inline">\(q(\theta)\)</span>。关于这个替代概率分布，有一个限制条件，即积分 <span class="math display">\[E_q(h(\theta)\frac{p(\theta)}{q(\theta)})\]</span> 的方差是有限的。具体写出就是 <span class="math display">\[\int_\Theta (h(\theta)\frac{p(\theta)}{q(\theta)})^2q(\theta)d\theta = \int_\Theta h^2(\theta) \frac{p^2(\theta)}{q(\theta)}d\theta &lt; + \infty\]</span></p>
 <p>这个限制条件是比较苛刻的。为了放宽这个条件，我们可以采用另外一种方法来近似积分<span class="math inline">\(E_p(h(\theta))\)</span> <span class="math display">\[E_p(h(\theta)) = \frac{\int h(\theta) p(\theta)d\theta}{p(\theta)d\theta} = \frac{\int h(\theta) (p(\theta)/q(\theta)) q(\theta)d\theta}{\int (p(\theta)/q(\theta)) q(\theta)d\theta}\]</span> 在实际操作中，我们可以生成<span class="math inline">\(\theta_i \sim q(\theta),i=1,\dots, N\)</span>，然后利用这组随机变量来估计 <span class="math display">\[E_p(h(\theta)) = \frac{\sum_i h(\theta_i) (p(\theta_i) / q(\theta_i))}{\sum_j p(\theta_j) / q(\theta_j)}\]</span> 这样做会引入一个小的偏差(bias)，但是可以有限的避免上面提到方差发散的问题。即，我们可以选取的替代概率分布的范围更大了。</p>
 </div>
 <div id="conclusion" class="section level1">

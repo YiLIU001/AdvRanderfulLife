@@ -128,7 +128,7 @@ w_i_tilde2 <- w_i2 / sum(w_i2)
 上面这种方法的思想很简单也很直观，但是一个问题是如何选择替代概率分布$q(\theta)$。关于这个替代概率分布，有一个限制条件，即积分
 $$E_q(h(\theta)\frac{p(\theta)}{q(\theta)})$$
 的方差是有限的。具体写出就是
-$$\int_\Theta (h(\theta)\frac{p(\theta)}{q(\theta)})^2q(\theta)d\theta = \int_\Theta ^2(\theta) \frac{p^2(\theta)}{q(\theta)}d\theta < + \infty$$
+$$\int_\Theta (h(\theta)\frac{p(\theta)}{q(\theta)})^2q(\theta)d\theta = \int_\Theta h^2(\theta) \frac{p^2(\theta)}{q(\theta)}d\theta < + \infty$$
 
 这个限制条件是比较苛刻的。为了放宽这个条件，我们可以采用另外一种方法来近似积分$E_p(h(\theta))$
 $$E_p(h(\theta)) = \frac{\int h(\theta) p(\theta)d\theta}{p(\theta)d\theta} = \frac{\int h(\theta) (p(\theta)/q(\theta)) q(\theta)d\theta}{\int (p(\theta)/q(\theta)) q(\theta)d\theta}$$
