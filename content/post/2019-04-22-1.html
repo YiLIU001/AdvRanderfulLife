@@ -17,14 +17,14 @@ output:
 
 <div id="TOC">
 <ul>
-<li><a>简介</a></li>
-<li><a>模型定义</a></li>
-<li><a>为什么不用梯度下降法求解？</a></li>
-<li><a>小结</a></li>
+<li><a href="#简介">简介</a></li>
+<li><a href="#模型定义">模型定义</a></li>
+<li><a href="#为什么不用梯度下降法求解">为什么不用梯度下降法求解？</a></li>
+<li><a href="#小结">小结</a></li>
 </ul>
 </div>
 
-<div class="section level1">
+<div id="简介" class="section level1">
 <h1>简介</h1>
 <p>机器学习可以分成三个子领域：监督学习，无监督学习和强化学习。无监督学习可以看成是“没有老师情况下的学习”，因为只有数据本身，没有监督学习里的标签，也没有强化学习里的反馈。</p>
 <p>这里我们介绍一种聚类方法，高斯混合模型(Gaussian mixture model)。（这里要和mixed model区分开来，mixed model是一种统计模型，主要用来处理重复测量，或者有群组效应的数据，可以认为是一种监督学习方法）。高斯混合模型是一种基于模型的聚类方法，它是混合模型的一种特例，因为它只考虑高斯分布的混合。它和另一种常见的聚类方法K-Means有很多相似性。从某种程度上来说，K-Means是高斯混合模型的一种特殊情况。能使用K-Means的问题就能使用高斯混合模型，比如图像压缩中使用的矢量量化（vector quantization，参见Elements of statistical learning, Chap 14）。除此之外，高斯混合模型还可以用来做异常检测。</p>
@@ -32,9 +32,13 @@ output:
 <ul>
 <li><a href="/2019/04/27/2">高斯混合模型2</a></li>
 <li><a href="/2019/05/15/3">高斯混合模型3</a></li>
+<li><a href="/2019/05/19/4">高斯混合模型4</a></li>
+<li><a href="/2019/05/27/5">高斯混合模型5</a></li>
+<li><a href="/2019/09/10/6">高斯混合模型6</a></li>
+<li><a href="/2019/09/22/7">高斯混合模型7</a></li>
 </ul>
 </div>
-<div class="section level1">
+<div id="模型定义" class="section level1">
 <h1>模型定义</h1>
 <p>具体模型如下：我们有一批数据<span class="math inline">\(\{x_i\}, i=1,\dots, n\)</span>,其中每个数据都是独立服从一个混合高斯分布。即 <span class="math display">\[x_i \overset{\text{i.i.d}}{\sim} f(x_i)  \]</span></p>
 <p>其中的概率密度函数可写成 <span class="math display">\[f(x) = \sum_{k=1}^K \pi_k \phi_k(x) \]</span></p>
@@ -42,7 +46,7 @@ output:
 <p>模型的参数有 <span class="math display">\[\pi_k, k=1, \dots, K, \]</span> 满足 <span class="math display">\[\pi_k \geq 0, \sum_k \pi_k = 1 \]</span> 同时还有高斯分布的参数 <span class="math display">\[ \mu_k, \sigma^2_k, k=1, \dots, K \]</span> 此外还有一个超参数<span class="math inline">\(K\)</span>。这里我们给出的记号是一维数据，但是推广到高维空间也并不难，只需要 <span class="math display">\[\mu_k \rightarrow \vec{\mu}_k\]</span> <span class="math display">\[\sigma_k^2 \rightarrow \Sigma_k, \Sigma_k \text{ semi-definite}\]</span> 其中，<span class="math inline">\(\vec{\mu}_k\)</span>是<span class="math inline">\(p\)</span>维空间向量，<span class="math inline">\(\Sigma_k\)</span>是<span class="math inline">\(p\times p\)</span>半正定矩阵。在后续的论述中，我们会先使用一维数据为例子，然后再推广到高维空间。</p>
 <p>因此，对于数据，我们可以写出对数似然函数 <span class="math display">\[ \ell(\theta|x) = \sum_{i=1}^n \log \left( \sum_k \pi_k \phi_k(x_i) \right)\]</span></p>
 </div>
-<div class="section level1">
+<div id="为什么不用梯度下降法求解" class="section level1">
 <h1>为什么不用梯度下降法求解？</h1>
 <p>对于参数估计，我们使用常用的最大似然估计法（MLE）。但是对于高斯混合模型的求解一般不会用梯度下降（或者上升）法来求解。这里有几个原因：</p>
 <ol style="list-style-type: decimal">
@@ -87,12 +91,12 @@ print(paste(&quot;Simple imp result:&quot;, res1))</code></pre>
 microbenchmark(loglik(c(-2,2), x),
                loglik_vec(c(-2,2), x))</code></pre>
 <pre><code>## Unit: microseconds
-##                     expr      min        lq       mean    median
-##      loglik(c(-2, 2), x) 10446.05 10825.557 15548.6847 12580.310
-##  loglik_vec(c(-2, 2), x)   340.31   357.022   498.6168   401.758
-##          uq       max neval
-##  15331.9985 59350.062   100
-##    501.1865  5455.348   100</code></pre>
+##                     expr       min        lq       mean     median         uq
+##      loglik(c(-2, 2), x) 10345.013 11578.857 13042.7998 12340.3640 14017.6565
+##  loglik_vec(c(-2, 2), x)   345.783   365.991   463.3192   393.5485   449.4445
+##        max neval
+##  21451.336   100
+##   6050.843   100</code></pre>
 <p>所以我们使用第二种矢量化的函数。</p>
 <p>下面我们看看这个对数似然函数的样貌(landscape)。 <img src="/post/2019-04-22-1_files/figure-html/unnamed-chunk-6-1.png" width="672" /> 很明显的一点是对数似然函数是对称的，即<span class="math inline">\(\mu_1 \leftrightarrow \mu_2\)</span>，我们得到同样的对数似然函数。这一点在前面介绍过。随着<span class="math inline">\(K\)</span>的增大，这种对称性也会变强，导致也要有更多的似然函数的极值点。</p>
 <p>下面我们来比较一下梯度下降法和EM算法的效率。对于梯度下降法，对数似然函数的梯度是 <span class="math display">\[\frac{\partial \ell}{\partial \mu_1} = \sum_{i=1}^n \frac{\pi_1 \phi_1(x_i) (-) (\mu_1-x_i)/\sigma^2}{\pi_1 \phi_1(x_i) + \pi_2\phi_2(x_i)}\]</span> <span class="math display">\[\frac{\partial \ell}{\partial \mu_2} = \sum_{i=1}^n \frac{\pi_2 \phi_2(x_i) (-) (\mu_2-x_i)/\sigma^2}{\pi_1 \phi_1(x_i) + \pi_2\phi_2(x_i)}\]</span> 现在我们可以定义梯度计算的函数</p>
@@ -106,7 +110,7 @@ dmu2 &lt;- function(mu1, mu2) {
 <p>现在我们用EM算法来求解，算法细节在后面的文章里给出，这里直接给出结果。 <img src="/post/2019-04-22-1_files/figure-html/unnamed-chunk-9-1.png" width="672" /><img src="/post/2019-04-22-1_files/figure-html/unnamed-chunk-9-2.png" width="672" /></p>
 <p>从上面的图可以看出，在第二步的时候EM算法就收敛了，而梯度优化法则在约15步才收敛。因此对于高斯混合模型来说，EM算法是更有效的求解方法。在下一篇文章里，我们会详细介绍EM算法。</p>
 </div>
-<div class="section level1">
+<div id="小结" class="section level1">
 <h1>小结</h1>
 <p>在本篇文章里，我们引入了一种主要用于聚类的无监督学习模型：高斯混合模型。这种模型可以看成是混合模型的一种特例，而常用的聚类模型K-Means可以看成是高斯混合模型的一种特例。</p>
 <p>通过一个简化的模型，我们说明了对于混合模型，梯度上升（或下降）法并不是一个很高效的优化求解算法。在混合模型中，常用的优化算法是EM算法。</p>
